@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import cv2
 from norma_image import normal_with_log
 import find_circle
@@ -24,7 +25,9 @@ no = 0
 
 for i in circles[0]:
     i[2]=max_r
-    h_start = ((max_r*2)>>3)*3 #3/8開始取
+     #3/8開始取
+    h_start = ((max_r*2)>>3)*3 
+   
     
     square_images = circle_to_square.get_cartesian_image(gray_image,i[0],i[1],i[2],0,2,h_start)
     square_image = square_images[0]
