@@ -69,6 +69,40 @@ def get_current_value(img):
     width = shape[1]
     
     sum_of_col = np.sum(img,axis=0)
-    max_index = np.argmax(sum_of_col)       
+    max_index = np.argmax(sum_of_col)   
+    sum_of_col_flip = np.flip(sum_of_col)
+    max_index_flip = np.argmax(sum_of_col_flip) 
+    max_index_flip = width-1 - max_index_flip
+    
+    if max_index != max_index_flip:
+        max_index =int(round( (max_index+max_index_flip)/2.0))
+    
+#    print max_index
+    ratio = (1.0- max_index*1.0 / width)*10
+    return ratio
+
+def get_current_value_by_line(img):
+    height, width = img.shape[:2]
+#    shape = img.shape
+#    width = shape[1]
+    
+    max_index = -1
+    max_line_length = 0
+    for w in range(0, width):
+        line_length = 0
+        for h in range(height-1,1,-1):
+            now_pixel = img[h,w]
+            pre_pixel = img[h-1,w]
+            if now_pixel == 255 and pre_pixel == 0:
+                break
+            elif now_pixel == 255 and pre_pixel == 255:
+                line_length+=1
+        if line_length > max_line_length:
+            max_line_length = line_length
+            max_index = w
+
+    print max_index
+#    sum_of_col = np.sum(img,axis=0)
+#    max_index = np.argmax(sum_of_col)       
     ratio = (1.0- max_index*1.0 / width)*10
     return ratio

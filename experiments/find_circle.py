@@ -19,7 +19,7 @@ def sort_circles(circles,sort_index):
 def parse_value(val,ccw,last_no):
     val = 10.0-val if ccw else val
     round_val = round(val)
-    if round_val - val <=0.1:
+    if (round_val - val) <=0.1 and 0 == last_no:
         val += 0.1
 
     val = val if last_no else math.floor(val)
