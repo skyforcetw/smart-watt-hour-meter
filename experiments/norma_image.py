@@ -19,7 +19,7 @@ def normal_with_log(image):
 		log_normal = math.log(normal,10)
 		log_255 = round(255 * log_normal)
 		lut[gray0] = log_255
-		print gray0 ," ",normal," ",log_normal," ",log_255
+#		print gray0 ," ",normal," ",log_normal," ",log_255
 
 	result = cv2.LUT(image, lut)
 	return result
