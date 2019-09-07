@@ -14,7 +14,7 @@ dump_image = 1
 output_dir = './output/'
 
 if debug:
-    normal_image = cv2.imread('../images/normal.png')
+    gray_image = cv2.imread('../images/normal.png')
 else:
     image = cv2.imread('../images/640x480.png')
     normal_image = normal_with_log(image)
