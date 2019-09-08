@@ -55,6 +55,7 @@ for i in circles[0]:
 #    rect_image = cv2.morphologyEx(rect_image, cv2.MORPH_OPEN, kernel)
 	
     value = circle_to_rect.get_current_value(rect_image)
+#    value = circle_to_rect.get_current_value_by_line(rect_image)
     value = find_circle.parse_value(value,no%2==0,1==no)
     print(i, " ", value)    
 	
