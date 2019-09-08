@@ -9,7 +9,7 @@ import numpy as np
 
 start = time.time()
 
-debug = 0
+debug = 1
 use_binary = 1
 dump_image = 1
 rect_w_extend = 2
