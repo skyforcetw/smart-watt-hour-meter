@@ -12,8 +12,9 @@ import numpy as np
 import time
 
 history_dir = './history/'
-#_15_min = 60 * 15
-_15_min = 15
+_15_min = 60 * 15
+_15_sec = 15
+sleep_time = _15_sec
 
 # Create the in-memory stream
 stream = BytesIO()
@@ -40,7 +41,7 @@ def main():
 
         print "time : %s" % time.ctime()
         image = capture()
-        time.sleep( _15_min )
+        time.sleep( sleep_time )
 
     
 if __name__=='__main__':
