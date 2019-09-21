@@ -25,12 +25,13 @@ time.sleep(1)
 # 打开串口
 ser = serial.Serial('/dev/serial0',4800)
 
-print ser.name          # check which port was really used
-
-for x in range(0,10):
-    print(x)
-    ser.write(str(x))      # write a string
-    time.sleep(2)
+# print ser.name          # check which port was really used
+ser.write(time.ctime())
+ser.write('\n\r')
+# for x in range(0,10):
+    # print(x)
+    # ser.write(str(x))      # write a string
+    # time.sleep(2)
 
 ser.close()             # close port
 

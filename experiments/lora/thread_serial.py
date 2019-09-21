@@ -5,30 +5,43 @@ Created on Tue Sep 10 15:46:15 2019
 @author: skyforce.shen
 """
 
-import threading
-import serial
+#!/usr/bin/python
 
-connected = False
+import serial
+import threading
+import signal
+
+def keyboardInterruptHandler(signal, frame):
+    print("KeyboardInterrupt (ID: {}) has been caught. Cleaning up...".format(signal))
+    exit(0)
+    
 port = '/dev/serial0'
 baud = 4800
+connected = False
+serial_port = serial.Serial(port, baud, timeout=120)
+signal.signal(signal.SIGINT, keyboardInterruptHandler)
 
-serial_port = serial.Serial(port, baud)
-#serial_port.open()
- 
+
+    
 def handle_data(data):
-    print(data)
+    if len(data):
+        print(data)
 
 def read_from_port(ser):
-#    while not connected:
-#        #serin = ser.read()
-#        connected = True
+    print 'test0'
+    while not connected:
+        print 'test1'
+        #serin = ser.read()
+        connected = True
+        
 
         while True:
-#           print("test")
-           reading = ser.readline().decode()
+           print 'test2'
+           reading = ser.readline().decode(errors='replace')
+           # reading = ser.read()
            handle_data(reading)
-           ser.write(b'123\n')
-           ser.flush()
 
-thread = threading.Thread(target=read_from_port, args=(serial_port,))
+
+print 'main'
+thread = threading.Thread(target=read_from_port, args=(serial_port))
 thread.start()

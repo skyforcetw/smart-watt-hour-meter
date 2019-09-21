@@ -1,0 +1,2 @@
+thread_serial怪怪的
+先用會block的while_serial吧!
