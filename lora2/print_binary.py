@@ -9,6 +9,12 @@ port = '/dev/serial0'
 baud = 9600
 ser = serial.Serial(port, baud)   # 初始化序列通訊埠
 
+pin_aux = 18
+pin_md1 = 17
+pin_md0 = 27  
+
+lora.begin(ser,pin_md0,pin_md1,pin_aux)
+lora.normal()
 
 
 with open(filename, "rb") as f:
@@ -17,11 +23,11 @@ with open(filename, "rb") as f:
     size_str = str(size)
     # print size.zfill(4)
     size_str = size_str.zfill(4)
-    output = 'bin' , size_str , '\n'
+    output = 'bin' + size_str   
     
     print output
     ser.writelines(output)
-    # ser.write('\n')
+    ser.write('\n')
     # print 'bin'
     # print size_str
     
@@ -34,4 +40,8 @@ with open(filename, "rb") as f:
         # Do stuff with byte.
         byte = f.read(1)
 
-        ser.write(byte)
+        # ser.write(byte)
+       
+    ser.write('\n')
+    ser.writelines(reversed(output))
+    ser.write('\n')
