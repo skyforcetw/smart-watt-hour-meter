@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import serial  # 引用pySerial模組
-# import RPi.GPIO as GPIO  #引入RPi.GPIO库
 import lora_setting as lora
 import time
 
@@ -63,8 +62,6 @@ def parse_command(command):
             
             if set_airspeed(tokens[2]) :
                 lora.store_to_sram()
-                # lora.load_setting()
-                # lora.print_setting()
 
                 if negotiation():
                     print 'negotiation OK'
@@ -110,6 +107,9 @@ def parse_command(command):
     elif tokens[0] == 'echo':
         ser.writelines(tokens[1])
         ser.write('\n')
+    elif tokens[0] == 'take':
+        # ser.writelines(tokens[1])
+        # ser.write('\n')        
     # print(command ,' ',tokens)
     
 def negotiation():    
