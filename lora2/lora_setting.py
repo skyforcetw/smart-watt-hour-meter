@@ -20,6 +20,11 @@ def auxEventHandler (pin):
         print "Falling edge detected"  
 
 
+# aux_event_callback
+def set_aux_callback(callback):
+
+    # aux_event_callback = callback
+    GPIO.add_event_callback(pin_aux,callback)
     
 def begin(_ser,_pin_md0 ,_pin_md1,_pin_aux):
     ser=_ser
