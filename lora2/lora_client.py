@@ -108,6 +108,7 @@ def parse_command(command):
         ser.writelines(tokens[1])
         ser.write('\n')
     elif tokens[0] == 'take':
+        print 'take pic & trans file'
         # ser.writelines(tokens[1])
         # ser.write('\n')        
     # print(command ,' ',tokens)
