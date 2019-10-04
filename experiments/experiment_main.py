@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
+#python lib
 import cv2
+import time
+import numpy as np
+#my lib
 from norma_image import normal_with_log
 import find_circle
 import circle_to_rect
-#import math
-import time
-import numpy as np
 
 start = time.time()
 
