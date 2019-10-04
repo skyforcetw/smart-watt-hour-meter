@@ -35,10 +35,12 @@ def main():
         if line == enter_binary:
             binary_mode = True
             f = open ( filename , mode = 'wb' )
+            print ('in binary')
             continue
             
             
-        if line == leave_binary or binary_count>=941:
+        if binary_count>=3968:
+            binary_count=0
             binary_mode = False 
             f.close()
             print ('done', end='\n')
