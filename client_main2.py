@@ -19,7 +19,7 @@ history_dir = './history/'
 # Create the in-memory stream
 stream = BytesIO()
 camera = PiCamera()
-camera.resolution = (640, 360)
+debug = 1
 
 def capture():
     camera.start_preview()
@@ -35,12 +35,17 @@ def capture():
     filename = format + '.jpg'
     cv2.imwrite(history_dir+filename, img)
     return img
+	
+def capture_d():	
+	img = cv2.imread('images/normal.png')
+	return img
     
 def main():
     # while 1:
 
     print "time : %s" % time.ctime()
-    image = capture()
+    image = capture() if 0 == debug else capture_d()
+ 
         # time.sleep( sleep_time )
 
     
