@@ -70,7 +70,7 @@ def get_current_value(img):
     
     sum_of_col = np.sum(img,axis=0)
     max_index = np.argmax(sum_of_col)   
-    sum_of_col_flip = np.flip(sum_of_col)
+    sum_of_col_flip = np.flip(sum_of_col,0)
     max_index_flip = np.argmax(sum_of_col_flip) 
     max_index_flip = width-1 - max_index_flip
     
