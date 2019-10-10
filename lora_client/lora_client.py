@@ -52,57 +52,62 @@ def set_tx_power(power):
         lora.set_tx_power(3)
         ok = True    
     return ok
+	
+def sharp_command(tokens):
+	if tokens[1]=='air':
+		ser.writelines('OK1\n')
+		org_air_speed = lora.get_airspeed()
+		
+		if set_airspeed(tokens[2]) :
+			lora.store_to_sram()
+
+			if negotiation():
+				print 'negotiation OK'
+			else:
+				print 'negotiation NG'
+				lora.set_airspeed(org_air_speed)
+				lora.store_to_sram()
+		else:
+			print 'wrong air command'
+		
+	elif tokens[1]=='power':
+		ser.writelines('OK1\n')
+		org_tx_power = lora.get_tx_power()
+		
+		if set_tx_power(tokens[2]) :
+			lora.store_to_sram()
+
+			if negotiation():
+				print 'negotiation OK'
+			else:
+				print 'negotiation NG'
+				lora.set_tx_power(org_tx_power)
+				lora.store_to_sram()
+		else:
+			print 'wrong power command'
+			
+def dollar_command(tokens):
+	ok = False
+	
+	if tokens[1]=='air':
+		ok = set_airspeed(tokens[2])          
+	elif tokens[1]=='power':
+		ok = set_tx_power(tokens[2])
+	elif tokens[1]=='load':
+		setting = lora.print_setting()
+		ser.writelines(setting)
+		ser.write('\n')
+	if ok :
+		lora.store_to_sram()
+		# lora.reset()    		
 
 def parse_command(command):
     tokens=command.split(' ');
     if tokens[0] =='#':
-        if tokens[1]=='air':
-            ser.writelines('OK1\n')
-            org_air_speed = lora.get_airspeed()
-            
-            if set_airspeed(tokens[2]) :
-                lora.store_to_sram()
-
-                if negotiation():
-                    print 'negotiation OK'
-                else:
-                    print 'negotiation NG'
-                    lora.set_airspeed(org_air_speed)
-                    lora.store_to_sram()
-            else:
-                print 'wrong air command'
-            
-        elif tokens[1]=='power':
-            ser.writelines('OK1\n')
-            org_tx_power = lora.get_tx_power()
-            
-            if set_tx_power(tokens[2]) :
-                lora.store_to_sram()
-
-                if negotiation():
-                    print 'negotiation OK'
-                else:
-                    print 'negotiation NG'
-                    lora.set_tx_power(org_tx_power)
-                    lora.store_to_sram()
-            else:
-                print 'wrong power command'
-                
+        sharp_command(tokens)      
             
     elif tokens[0] == '$':
-        ok = False
-        
-        if tokens[1]=='air':
-            ok = set_airspeed(tokens[2])          
-        elif tokens[1]=='power':
-            ok = set_tx_power(tokens[2])
-        elif tokens[1]=='load':
-            setting = lora.print_setting()
-            ser.writelines(setting)
-            ser.write('\n')
-        if ok :
-            lora.store_to_sram()
-            # lora.reset()             
+        dollar_command(tokens)        
     
     elif tokens[0] == 'echo':
         ser.writelines(tokens[1])
@@ -110,7 +115,11 @@ def parse_command(command):
     elif tokens[0] == 'take':
         print 'take pic & trans file'
         # ser.writelines(tokens[1])
-        # ser.write('\n')        
+        # ser.write('\n')    
+	elif tokens[0] == 'read':		
+		print 'take pic & parse read & tx read'
+		command = 'python /home/pi/smart-watt-hour-meter/take_and_read.py'
+		os.system(command)
     # print(command ,' ',tokens)
     
 def negotiation():    
@@ -120,10 +129,7 @@ def negotiation():
     # lora.normal()
     time.sleep(1)
     lora.normal()
-    # time.sleep(1)
-    # ser.writelines('OK2\n')
-    # ser.writelines('OK2\n')
-    # ser.writelines('OK2\n')
+
     ser.writelines('OK2\n')
     print 'send OK2'
     
