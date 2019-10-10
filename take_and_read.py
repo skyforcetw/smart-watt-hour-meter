@@ -41,7 +41,7 @@ def capture():
     camera.start_preview()
     stream.seek(0)
     camera.capture(stream, format='jpeg')
-	capture_len = stream.getvalue()
+    capture_len = stream.getvalue()
     # "Rewind" the stream to the beginning so we can read its content
     stream.seek(0)
     
@@ -49,10 +49,10 @@ def capture():
     img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
     
     return img
-	
-def capture_d():	
-	img = cv2.imread('images/im_0012_20190905_225425.jpg')
-	return img
+    
+def capture_d():    
+    img = cv2.imread('/home/pi/smart-watt-hour-meter/images/im_0012_20190905_225425.jpg')
+    return img
     
 def circles_to_values(circles,gray_image):
 
@@ -73,15 +73,15 @@ def circles_to_values(circles,gray_image):
 
         rect_images = circle_to_rect.get_cartesian_image(gray_image,i[0],i[1],i[2],0,2,h_start)
         rect_image = rect_images[0]
-    	
+        
         height, width = rect_image.shape[:2]
         rect_image = rect_image[h_start:height, :]
         rect_image = cv2.equalizeHist(rect_image)
-    	
+        
         if use_binary:
             rect_image = cv2.adaptiveThreshold\
             (rect_image,255,cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY_INV,159,35)
-    	
+        
         value = circle_to_rect.get_current_value(rect_image)
         value = find_circle.parse_value(value,no%2==0,1==no)
         
@@ -89,7 +89,7 @@ def circles_to_values(circles,gray_image):
         values.append(value)
         
 #        print(i, " ", value)    
-    	
+        
         if dump_image:
             crop_image = rect_images[1]
             cv2.imwrite(output_dir+'square-%d.png' %(no),rect_image)
@@ -100,7 +100,7 @@ def circles_to_values(circles,gray_image):
             # draw the center of the circle
                 cv2.circle(gray_image,(i[0],i[1]),2,(0,0,255),3)
     
-        no+=1	
+        no+=1   
     
     if dump_image:
         cv2.imwrite(output_dir+'circle.png',gray_image)  
@@ -111,9 +111,14 @@ def circles_to_values(circles,gray_image):
 
 def tx_values(values):
     lora.begin(ser,pin_md0,pin_md1,pin_aux)
-
-    lora.print_setting()
+    # lora.print_setting()
     lora.normal()
+    v0 = str(values[0])
+    v1 = str(values[1])
+    ser.write(v0)
+    ser.write(',')
+    ser.write(v1)
+    ser.write('\n')
 
 def main():
 
@@ -129,7 +134,7 @@ def main():
     pairs = circles_to_values(circles,gray_image)
     circle_centers = pairs[0]
     values = pairs[1]
-	
+    
     if 2 == len(values):
         print circle_centers
         print values
