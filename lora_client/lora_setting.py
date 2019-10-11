@@ -56,6 +56,20 @@ def normal():
     GPIO.output(pin_md1, GPIO.LOW)
     GPIO.output(pin_md0, GPIO.LOW)
     time.sleep(wait_after_change_mode)
+    
+def wakeup():
+    global status
+    status = 'wakeup'
+    GPIO.output(pin_md1, GPIO.LOW)
+    GPIO.output(pin_md0, GPIO.HIGH)
+    time.sleep(wait_after_change_mode)  
+    
+def powersave():
+    global status
+    status = 'powersave'
+    GPIO.output(pin_md1, GPIO.HIGH)
+    GPIO.output(pin_md0, GPIO.LOW)
+    time.sleep(wait_after_change_mode)      
 
 before_status = 'unknow'
 # before_baudrate = 9600
@@ -73,6 +87,12 @@ def before_setting():
 def after_setting():
     if 'normal' == before_status:
         normal()
+    elif 'wakeup' == before_status:
+        wakeup()        
+    elif 'powersave' == before_status:
+        powersave()
+    elif 'sleep' == before_status:
+        sleep()     
     # ser.baudrate = before_baudrate
     
 lora_setting = []
@@ -149,6 +169,19 @@ def set_tx_power(power):
     setted = (lora_setting[5] & 0xFC) | (power);
     lora_setting[5] = setted    
     
+def get_wakeup_time():
+    if 0 == len(lora_setting):
+        return -1
+    time = (lora_setting[5] & 0x38)>>3
+    return time
+    
+def set_wakeup_time(time):
+    if 0 == len(lora_setting):
+        return
+    
+    setted = (lora_setting[5] & 0xc7) | (time<<3)
+    lora_setting[5] = setted 
+    
 def print_setting():
     if 0 == len(lora_setting):
         print 'no lora setting'
@@ -160,6 +193,12 @@ def print_setting():
         setting +=' '+hex(s)
     setting = 'lora setting: '+setting+'; size:'+ format(len(lora_setting))
     print setting
+    airspeed = get_airspeed()
+    tx_power = get_tx_power()
+    wakeup_time = get_wakeup_time()
+    print 'airspeed: ',airspeed
+    print 'tx power: ',tx_power
+    print 'wakeup time: ',wakeup_time
     return setting
         
 def store_to_sram():

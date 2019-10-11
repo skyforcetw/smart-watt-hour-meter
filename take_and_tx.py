@@ -18,7 +18,6 @@ from smart import circle_to_rect
 from smart import find_circle
 
 history_dir = './history/'
-debug = 1
 
 port = '/dev/serial0'
 baud = 9600
@@ -123,13 +122,13 @@ def tx_values(values):
 def main():
 
     print "time : %s" % time.ctime()
+	debug = 1
     image = capture() if 0 == debug else capture_d()
     image = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
     store_history_image(image)
     
     gray_image = normal_image.normal_with_log(image)
     cv2.imwrite('./images/gray.jpg', gray_image)
-        # time.sleep( sleep_time )
     circles = find_circle.find(gray_image)
     pairs = circles_to_values(circles,gray_image)
     circle_centers = pairs[0]

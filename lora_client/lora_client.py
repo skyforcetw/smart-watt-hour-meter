@@ -115,7 +115,8 @@ def parse_command(command):
         print 'take pic and trans file'
     elif tokens[0] == 'read':
         print 'take pic & parse read & tx read'
-        cmd = 'python /home/pi/smart-watt-hour-meter/take_and_read.py'
+        python_cmd = '/home/pi/berryconda2/bin/python'
+        cmd = python_cmd + ' /home/pi/smart-watt-hour-meter/take_and_tx.py'
         os.system(cmd)
         
     print(tokens)
